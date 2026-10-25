@@ -14,7 +14,8 @@ void PulseProcBitStream::init(
   next(nxt);
   _l = l;
   _tspb = tspb;
-  _blb = blb > 8 ? 8 : blb;
+  // 0 used bits is invalid and would leave the end marker where advance() never finds it
+  _blb = (blb == 0 || blb > 8) ? 8 : blb;
   _b = 0x10000;
 }
 
@@ -23,8 +24,9 @@ int32_t __not_in_flash_func(PulseProcBitStream::advance)(
   bool *pstate,
   PulseProc **top
 ) {
-  if (_l == 0) return PP_COMPLETE;
   if (_b & 0x10000) {
+    // Only complete once every bit of the last byte has been played
+    if (_l == 0) return PP_COMPLETE;
     int32_t r = is->readByte();
     if (r < 0) return PP_ERROR;
     if (_l > 1 || _blb == 8) {

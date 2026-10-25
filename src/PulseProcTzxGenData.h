@@ -36,6 +36,9 @@ public:
     PulseProc *nxt,
     uint32_t tsPerMs
   );
+
+  // Free the symbol table (clear() alone keeps its capacity)
+  void release() { std::vector<uint16_t>().swap(_sd); }
   
   virtual int32_t advance(
     InputStream *is,

@@ -149,7 +149,7 @@ public:
     _volA = 0;
     _volB = 0;
     _volC = 0;
-    _env = (uint8_t *)&_env[0];
+    _env = (uint8_t *)&_envs[0];
     _envA = 0;
     _envB = 0;
     _envC = 0;

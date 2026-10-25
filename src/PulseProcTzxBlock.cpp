@@ -42,6 +42,13 @@ void PulseProcTzxBlock::init(
   _loopStart = 0;
   _loopCount = 0;
   _is48k = is48k;
+  _ppCallStream.reset();
+}
+
+void PulseProcTzxBlock::release() {
+  _ppCallStream.reset();
+  _ppTzxGenData.release();
+  _ppTzxSelect.release();
 }
 
 int32_t PulseProcTzxBlock::skipSingle(InputStream *is, const int8_t* l, uint32_t n, uint32_t m) {

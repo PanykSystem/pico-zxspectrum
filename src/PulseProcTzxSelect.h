@@ -26,6 +26,9 @@ public:
   );
   
   int32_t offset(uint32_t choice);
+
+  // Free the offsets (clear() alone keeps their capacity)
+  void release() { std::vector<uint16_t>().swap(_offsets); }
   
   void optionHandlers(
     std::function<void()> clearOptions,

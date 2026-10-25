@@ -29,6 +29,7 @@ ZxSpectrum::ZxSpectrum(
   _earInvert(0),
   _earDc(0),
   _intSource(ZX_SPECTRUM_INT_SRC),
+  _mute(false),
   _buzzer(0),
   _buzzerl(0),
   _bzf(0),
@@ -529,7 +530,8 @@ int32_t ZxSpectrum::loadZ80HeaderV2(InputStream *is, ZxSpectrumType *type) {
 */
   uint8_t buf[57];
   const int32_t hl = is->readWord();
-  if (hl > 57) {
+  // V2 headers are 23 bytes and V3 54 or 55; anything shorter leaves fields we read below unset
+  if (hl < 23 || hl > 57) {
     DBG_SPEC("Invalud Z80 V2/V3 header length %ld\n", hl);
     return -2; // error
   }

@@ -25,6 +25,13 @@ int32_t PulseProcSymdefs::advance(
   PulseProc **top
 ) {
   _sd->clear();
+
+  const uint32_t n = __mul_instruction(_as, _np + 1);
+  if (n > PULSE_PROC_MAX_SYMDEFS) {
+    DBG_PULSE("PulseProcSymdefs: Error symbol table too large (%ld entries)\n", n);
+    return PP_ERROR;
+  }
+  _sd->reserve(n);
   
   int32_t r;
   

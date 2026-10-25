@@ -57,5 +57,11 @@ public:
   }
   
   void option(uint32_t option) { _pptBlock.option(option); }
+
+  // Free heap held for the last tape
+  void release() {
+    std::vector<uint32_t>().swap(_bi);
+    _pptBlock.release();
+  }
   
 };

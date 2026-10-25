@@ -8,6 +8,7 @@ PulseProcChain::PulseProcChain() :
   _state(PP_COMPLETE),
   _stateP(PP_CONTINUE),
   _acc(0),
+  _idle(0),
   _ppTone1(),
   _ppStdByte(&_ppTone1),
   _ppStdByteStream(&_ppStdByte),
@@ -20,10 +21,12 @@ PulseProcChain::PulseProcChain() :
 
 void PulseProcChain::reset() {
   DBG_PULSE("PulseProcChain: reset \n");
+  _ppTzx.release();
   _is = 0;
   _top = 0;
   _state = PP_COMPLETE;
   _acc = 0;
+  _idle = 0;
 }
 
 void PulseProcChain::init(InputStream *is, PulseProc* top) {
@@ -32,6 +35,7 @@ void PulseProcChain::init(InputStream *is, PulseProc* top) {
   _top = top;
   _state = PP_CONTINUE;
   _acc = 0;
+  _idle = 0;
 }
 
 void PulseProcChain::pause(bool pause) {
@@ -55,6 +59,14 @@ void __not_in_flash_func(PulseProcChain::advance)(uint32_t tstates, bool *pstate
   while (_state >= 0 && _acc >= static_cast<uint32_t>(_state)) {
     _acc -= _state;
     _state = _top->advance(_is, pstate, &_top);
+    if (_state > 0) {
+      _idle = 0;
+    }
+    else if (++_idle > PULSE_PROC_MAX_IDLE_STEPS) {
+      DBG_PULSE("PulseProcChain: no pulses produced, stopping tape \n");
+      _state = PP_ERROR;
+      break;
+    }
     if (_state == PP_COMPLETE) {
       _state = 0;
       _top = _top ? _top->next() : 0;

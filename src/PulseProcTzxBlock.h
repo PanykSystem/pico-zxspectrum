@@ -108,5 +108,8 @@ public:
   }
   
   void option(uint32_t option);
+
+  // Free heap held for the last tape
+  void release();
   
 };

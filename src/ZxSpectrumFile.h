@@ -10,6 +10,8 @@ class ZxSpectrumFile {
   char* _name;
 public:
   ZxSpectrumFile(char* name);
+  ZxSpectrumFile(const ZxSpectrumFile&) = delete;
+  ZxSpectrumFile& operator=(const ZxSpectrumFile&) = delete;
   ~ZxSpectrumFile();
   void link(ZxSpectrumFile *c);
   ZxSpectrumFile* prev() { return _p; }

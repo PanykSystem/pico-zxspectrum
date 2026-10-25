@@ -278,6 +278,10 @@ int32_t PulseProcTzxIndex::skipGlue(InputStream *is) {
 int32_t PulseProcTzxIndex::indexBlock(InputStream *is, int32_t bt) {
   uint32_t pos = is->pos() - 1;
   DBG_PULSE("PulseProcTzxIndex: Indexing block type %02lX at %ld\n", bt, pos);
+  if (_bi->size() >= PULSE_PROC_TZX_MAX_BLOCKS) {
+    DBG_PULSE("PulseProcTzxIndex: Error too many blocks\n");
+    return PP_ERROR;
+  }
   _bi->push_back(pos);
   switch(bt) {
     // ID 10 - Standard speed data block

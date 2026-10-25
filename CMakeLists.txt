@@ -76,8 +76,8 @@ add_subdirectory(${PICO_FOLDER}/Zeta "${CMAKE_CURRENT_BINARY_DIR}/Zeta")
 set(Z80_SHARED_LIBS                 NO  CACHE BOOL "")
 set(Z80_WITH_Q                      YES CACHE BOOL "")
 set(Z80_WITH_ZILOG_NMOS_LD_A_IR_BUG YES CACHE BOOL "")
-set(Zeta_INCLUDE_DIR                "${PICO_FOLDER}/Zeta")
-set(Zeta_VERSION                    "v0.1")
+# Z80's FindZeta reads the version from Z/version.h, so point it at the folder holding that
+set(Zeta_INCLUDE_DIR                "${PICO_FOLDER}/Zeta/API")
 
 add_subdirectory(${PICO_FOLDER}/Z80 "${CMAKE_CURRENT_BINARY_DIR}/Z80")
 include_directories(${PICO_FOLDER}/Z80/API)

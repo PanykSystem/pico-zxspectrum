@@ -54,6 +54,8 @@ audio_sample_t      audio_buffer[AUDIO_BUFFER_SIZE];
 
 void hdmi_audio_init()
 {
+  // DVI is not initialised when another video driver (e.g. an LCD) is selected
+  if (!dvi0.timing) return;
   dvi_get_blank_settings(&dvi0)->top    = 0;
   dvi_get_blank_settings(&dvi0)->bottom = 0;
   dvi_audio_sample_buffer_set(&dvi0, audio_buffer, AUDIO_BUFFER_SIZE);

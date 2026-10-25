@@ -14,6 +14,12 @@
 #include "PulseProcPauseMillis.h"
 #include <functional>
 
+// Consecutive steps that produce no pulse before the tape is treated as broken.
+// Stops a malformed TZX (e.g. a jump back to an empty block) spinning forever.
+#ifndef PULSE_PROC_MAX_IDLE_STEPS
+#define PULSE_PROC_MAX_IDLE_STEPS 0x10000
+#endif
+
 class PulseProcChain {
 private:
   InputStream *_is;
@@ -21,6 +27,7 @@ private:
   int32_t _state;
   int32_t _stateP;
   uint32_t _acc;
+  uint32_t _idle;
   
   PulseProcTone _ppTone1;
   PulseProcStdByte _ppStdByte;

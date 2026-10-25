@@ -13,7 +13,7 @@ ZxSpectrumFile::ZxSpectrumFile(char* name) :
 }
 
 ZxSpectrumFile::~ZxSpectrumFile() {
-  delete _name;
+  delete[] _name;
 }
 
 void ZxSpectrumFile::link(ZxSpectrumFile *c) {

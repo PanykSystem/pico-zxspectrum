@@ -379,6 +379,11 @@ foreach(target
   # create map/bin/hex file etc.
   pico_add_extra_outputs(${target})
 
+  # No STDIO over USB, the USB port is used as a host for keyboards etc.
+  pico_enable_stdio_usb(${target} 0)
+  # STDIO over UART0 on GPIO0 (TX) and GPIO1 (RX)
+  pico_enable_stdio_uart(${target} 1)
+
 endforeach()
 
 set (ZxSpectrumPiZero_defines
@@ -402,6 +407,11 @@ set (ZxSpectrumPiZero_defines
   PICO_HDMI_AUDIO
   # Enable PS/2 keyboard on GPIO6-DAT, GPIO7-CLK
   USE_PS2_KBD
+  # Uncomment to log FatFS/SD card activity to the UART (GPIO0/1)
+#  DEBUG_FAT_SPI=1
+#  DEBUG_DIR_CACHE=1
+#  DEBUG_FAT_IS=1
+#  DEBUG_FAT_OS=1
 )
 
 target_compile_definitions(ZxSpectrumPiZero_640x480x60Hz PRIVATE

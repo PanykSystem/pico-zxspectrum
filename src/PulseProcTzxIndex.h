@@ -6,6 +6,11 @@
 #include "PulseProc.h"
 #include <vector>
 
+// Upper bound on the number of blocks indexed in a TZX file, to bound heap use
+#ifndef PULSE_PROC_TZX_MAX_BLOCKS
+#define PULSE_PROC_TZX_MAX_BLOCKS 4096
+#endif
+
 class PulseProcTzxIndex : public PulseProc {
 private:
   std::vector<uint32_t>* _bi;
